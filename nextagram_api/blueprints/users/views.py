@@ -21,7 +21,10 @@ def index():
         "username":user.username,
         "profileImage":user.profileImage
     } for user in users]
-    return jsonify(all_users)
+    if all_users:
+        return jsonify(all_users)
+    else: 
+        return jsonify(message="No users yet")
 
 # GET /users/<id>
 @users_api_blueprint.route('/<id>', methods=['GET'])
