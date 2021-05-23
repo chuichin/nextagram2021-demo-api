@@ -1,5 +1,6 @@
 import os
 
+
 os.environ['MIGRATION'] = '1'
 
 if not os.getenv('FLASK_ENV') == 'production':

@@ -1,6 +1,5 @@
 from app import app
-import instagram_api
-import instagram_web
+import nextagram_api
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
