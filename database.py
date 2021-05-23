@@ -1,5 +1,7 @@
 import os
 from urllib.parse import urlparse
+import psycopg2
+
 
 def parse_db_url(database_url):
     parsed = urlparse(database_url)
@@ -13,6 +15,8 @@ def parse_db_url(database_url):
 
 def return_db():
     db_config = parse_db_url(os.environ['DATABASE_URL'])
+    conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+
 
     if os.getenv('MIGRATION', '0') == '1':
         from playhouse.postgres_ext import PostgresqlExtDatabase
