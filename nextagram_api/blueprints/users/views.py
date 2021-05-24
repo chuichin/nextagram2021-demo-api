@@ -7,8 +7,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 # /api/v1/users
 users_api_blueprint = Blueprint('users_api',
-                             __name__,
-                             template_folder='templates')
+                             __name__)
 
 jwt = JWTManager(app) 
 
@@ -66,10 +65,29 @@ def check_name():
             "valid": True
         }), 200
 
+
+# GET /users/check_email
+@users_api_blueprint.route('/check_email', methods=["GET"])
+def check_email():
+    email = request.args.get('email')
+    existing_user = User.get_or_none(User.email == email)
+    if existing_user:
+        return jsonify({
+            "exists": True,
+            "valid": False
+        }), 200
+    else:
+        return jsonify({
+            "exists": False,
+            "valid": True
+        }), 200
+
+        
 # PUT /users/profileImage
 @users_api_blueprint.route('/profileImage', methods=["PUT"])
 @jwt_required()
 def upload_profile_image():
+    breakpoint()
     user = User.get_or_none(User.username == get_jwt_identity())
     if request.content_length == 0:
         return jsonify(message="No images passed", status="failed"), 400
@@ -112,7 +130,7 @@ def sign_up():
         newUser = User(username=username, email=email, password=generate_password_hash(password))
         if newUser.save():
             newUser = User.get(User.username == username, User.email == email)
-            access_token = create_access_token(identity=newUser.username)
+            access_token = create_access_token(identity=newUser.username, expires_delta =False)
             success_response = [{
                 "message" : "Successfully created a user and signed in",
                 "status" : "success",
@@ -136,7 +154,7 @@ def login():
         user = User.get_or_none(User.username == username)
         if user:
             result=check_password_hash(user.password, password)
-            access_token = create_access_token(identity=user.username)
+            access_token = create_access_token(identity=user.username, expires_delta =False)
             if result:
                 return jsonify({
                     "auth_token": access_token,

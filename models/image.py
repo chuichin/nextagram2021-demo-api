@@ -5,4 +5,4 @@ import peewee as pw
 
 class Image(BaseModel):
     user = pw.ForeignKeyField(User, backref='images')
-    image = pw.CharField()
+    url = pw.CharField()
