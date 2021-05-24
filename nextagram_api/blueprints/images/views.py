@@ -25,7 +25,6 @@ def images():
 @images_api_blueprint.route("/upload", methods=["POST"])
 @jwt_required()
 def upload_images():
-    breakpoint()
     user = User.get(User.username == get_jwt_identity())
     if request.content_length == 0:
         return jsonify(message="No images passed", status="failed"), 400
