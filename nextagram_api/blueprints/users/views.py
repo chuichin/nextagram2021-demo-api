@@ -87,7 +87,6 @@ def check_email():
 @users_api_blueprint.route('/profileImage', methods=["PUT"])
 @jwt_required()
 def upload_profile_image():
-    breakpoint()
     user = User.get_or_none(User.username == get_jwt_identity())
     if request.content_length == 0:
         return jsonify(message="No images passed", status="failed"), 400
