@@ -109,6 +109,17 @@ def upload_profile_image():
         "image": updated_user.profileImage
     }), 200
 
+# GET /search
+@users_api_blueprint.route("/search", methods=["GET"])
+def search():
+    keyword = request.args.get('search')
+    users = User.select().where(User.username.contains(keyword))
+    if users:
+        results = [each.id for each in users]
+        return jsonify(results), 200
+    else:
+        return jsonify(message="No results available"), 400
+
 # POST requests --------------------------------------
 
 # POST /users
