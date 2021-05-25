@@ -23,7 +23,7 @@ def index():
     if all_users:
         return jsonify(all_users)
     else: 
-        return jsonify(message="No users yet")
+        return jsonify([])
 
 # GET /users/<id>
 @users_api_blueprint.route('/<id>', methods=['GET'])
@@ -119,6 +119,8 @@ def search():
         return jsonify(results), 200
     else:
         return jsonify(message="No results available"), 400
+
+
 
 # POST requests --------------------------------------
 
